@@ -1,3 +1,4 @@
 Hello world
 Who's there?
 Git
+conflict from Git
