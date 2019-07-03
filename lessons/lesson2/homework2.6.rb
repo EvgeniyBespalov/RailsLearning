@@ -1,19 +1,19 @@
 products = Hash.new
 
 loop do
-puts "Enter product name (enter stop to exit)"
-product = gets.chomp.downcase
+  puts "Enter product name (enter stop to exit)"
+  product = gets.chomp.downcase
 
-break if product == "stop"
+  break if product == "stop"
 
-puts "Enter product price"
-price = gets.chomp.to_f
+  puts "Enter product price"
+  price = gets.chomp.to_f
 
-puts "Enter product quantity"
-quantity = gets.chomp.to_f
+  puts "Enter product quantity"
+  quantity = gets.chomp.to_f
 
-  if (products.key?(product))
-    if (products[product].key?(price))
+  if (products.key?product)
+    if (products[product].key?price)
       products[product][price] += quantity
     else
       products[product][price] = quantity
