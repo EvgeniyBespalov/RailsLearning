@@ -1,5 +1,5 @@
-vowels = Hash.new
+vowels = Hash.new{}
 
-('a'..'z').each.with_index{ |l,index| vowels[l] = index + 1 if ("aeiou".include?(l)) }
+('a'..'z').each.with_index { |letter, index| vowels[letter] = index + 1 if ("aeiou".include?(letter)) }
 
 puts vowels
