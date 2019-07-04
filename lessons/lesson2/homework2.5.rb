@@ -11,6 +11,6 @@ days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 day += days_in_month[1..month - 1].sum
 
-day += 1 if (month > 2 && year%4 == 0 && (year%100 != 0 || year%400 == 0))
+day += 1 if month > 2 && year%4 == 0 && (year%100 != 0 || year%400 == 0)
 
 puts day
