@@ -13,7 +13,7 @@ loop do
   puts "Enter product quantity"
   quantity = gets.chomp.to_f
 
-  products[product] = { price: price }
+  products[product] = {price: price}
   products[product][:quantity] = quantity
 end
 
@@ -21,8 +21,8 @@ puts products
 
 product_costs = {}
 
-products.each{ |k, v| product_costs[k] = v[:price] * v[:quantity] }
+products.each { |k, v| product_costs[k] = v[:price] * v[:quantity] }
 
-product_costs.each{ |k, v| puts "#{k} - #{v}" }
+product_costs.each { |k, v| puts "#{k} - #{v}" }
 
-puts "All costs = #{ product_costs.map{ |k, v| v }.sum }"
+puts "All costs = #{product_costs.map { |k, v| v }.sum}"

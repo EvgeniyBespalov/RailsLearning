@@ -10,4 +10,5 @@
   september: 30,
   october: 31,
   november: 30,
-  december: 31}.each{ |k, v| puts k if v == 30 }
+  december: 31
+}.each { |k, v| puts k if v == 30 }
