@@ -1,33 +1,25 @@
-products = Hash.new
+products = {}
 
 loop do
-puts "Enter product name (enter stop to exit)"
-product = gets.chomp.downcase
+  puts "Enter product name (enter stop to exit)"
+  product = gets.chomp
 
-break if product == "stop"
+  break if product == "stop"
 
-puts "Enter product price"
-price = gets.chomp.to_f
+  puts "Enter product price"
+  price = gets.chomp.to_f
 
-puts "Enter product quantity"
-quantity = gets.chomp.to_f
-
-  if (products.key?(product))
-    if (products[product].key?(price))
-      products[product][price] += quantity
-    else
-      products[product][price] = quantity
-    end
-  else
-    products[product] = {price => quantity}
-  end
+  puts "Enter product quantity"
+  quantity = gets.chomp.to_f
 end
+products[product] = {price: price}
+products[product][:quantity] = quantity
 
 puts products
 
-product_costs = Hash.new
+product_costs = {}
 
-products.each{|k, v| product_costs[k] = v.map{|p, q| p*q}.sum.round(2) }
+products.each{|k, v| product_costs[k] = v[:price] * v[:quantity] }
 
 product_costs.each{|k, v| puts "#{k} - #{v}"}
 
