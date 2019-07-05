@@ -1,4 +1,0 @@
-Hello world
-Who's there?
-Git
-conflict local + conflict from Git
