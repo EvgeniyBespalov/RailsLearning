@@ -1,22 +1,18 @@
 class Train
 
-  attr_reader: number, type, vagons
+  attr_reader: number, type, vagons, speed
   
-  def initialize number, type, vagons
+  def initialize (number, type, vagons)
     @number = number
     @type = type
     @vagons = vagons
     @speed = 0
   end
   
-  def speed= speed
-    @speed = speed if speed > 0  
+  def increase_speed (speed)
+    @speed = speed if speed > @speed  
   end
 
-  def speed
-    @speed
-  end  
-  
   def stop
     speed = 0
   end
@@ -29,7 +25,7 @@ class Train
     vagons -= 1 if speed == 0 && vagons > 0
   end
   
-  def route route
+  def take_route (route)
     @route = route
     route.firt_station << self
   end
