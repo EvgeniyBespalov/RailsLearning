@@ -2,14 +2,14 @@ class Train
 
   attr_reader: number, type, vagons, speed
   
-  def initialize (number, type, vagons)
+  def initialize(number, type, vagons)
     @number = number
     @type = type
     @vagons = vagons
     @speed = 0
   end
   
-  def increase_speed (speed)
+  def increase_speed(speed)
     @speed = speed if speed > @speed  
   end
 
@@ -25,7 +25,7 @@ class Train
     vagons -= 1 if speed == 0 && vagons > 0
   end
   
-  def take_route (route)
+  def take_route(route)
     @route = route
     route.firt_station << self
   end
@@ -47,31 +47,21 @@ class Train
   end
 
   def next_station
-    stations = @route.stations
-    station = stations.select { |station| station.trains.include? self }.first
+    stations = @route.stations    
     station_index = stations.index station
-    
-    if station_index != null && station_index < stations.size - 1
-      stations[station_index + 1]
-    else
-      nil
-    end
+     
+    stations[station_index + 1] if station_index != null && station_index < stations.size - 1
   end
   
   def station
-    @route.stations.select { |station| station.trains.include? self }.first
+    @route.stations.find { |station| station.trains.include? self }
   end
     
   def previous_station
     stations = @route.stations
-    station = stations.select { |station| station.trains.include? self }.first
     station_index = stations.index station
-    
-    if station_index != null && station_index > 0
-      stations[station_index - 1]
-    else
-      nil
-    end
+      
+    stations[station_index - 1] if station_index != null && station_index > 0
   end
 
 end

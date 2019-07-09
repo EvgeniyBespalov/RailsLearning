@@ -2,7 +2,7 @@ class Station
 
   attr_reader: name, trains
   
-  def initialize (name)
+  def initialize(name)
     @name = name
     @trains = []
   end
@@ -15,11 +15,11 @@ class Station
     trains.each { |train| train if train.type == :passenger }
   end
   
-  def take_train (train)
+  def take_train(train)
     trains << train    
   end
 
-  def send_train (train)
+  def send_train(train)
     trains.delete train
   end
 
