@@ -1,6 +1,6 @@
 class Train
 
-  attr_reader: number, type, speed
+  attr_reader :number, :type, :speed
   
   def initialize(number, type)
     @number = number
@@ -15,14 +15,6 @@ class Train
 
   def stop
     speed = 0
-  end
-  
-  def vagon_attach
-    vagons += 1 if speed == 0
-  end
-  
-  def vagon_detach
-    vagons -= 1 if speed == 0 && vagons > 0
   end
   
   def take_route(route)
@@ -64,4 +56,14 @@ class Train
     stations[station_index - 1] if station_index != null && station_index > 0
   end
 
+  protected
+  
+  def railcars_attach(railcars)
+    @railcars << railcars if speed == 0
+  end
+  
+  def railcars_detach(railcars)
+    @railcars.delete railcars if speed == 0 && vagons > 0
+  end
+  
 end

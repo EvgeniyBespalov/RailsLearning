@@ -1,8 +1,8 @@
-resource_relative 'railcar' 
+require_relative 'railcar' 
 
 class CargoRailcar < Railcar
 
-  attr_reader: loading_capacity
+  attr_reader :loading_capacity
 
   def initialize(loading_capacity)
     @loading_capacity = loading_capacity
@@ -10,6 +10,6 @@ class CargoRailcar < Railcar
   
   private
   
-  attr_writer: loading_capacity
+  attr_writer :loading_capacity
 
 end

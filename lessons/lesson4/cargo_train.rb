@@ -1,11 +1,16 @@
-resource_relative 'train' 
+require_relative 'train' 
 
 class CargoTrain < Train
 
-  attr_reader: railcars
-  
   def initialize(number) 
     super(number, :cargo)
   end
   
+  def railcars_attach(railcars)
+    super(railcars)
+  end
+  
+  def railcars_detach(railcars)
+    super(railcars)
+  end
 end

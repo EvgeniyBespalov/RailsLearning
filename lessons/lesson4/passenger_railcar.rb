@@ -1,8 +1,8 @@
-resource_relative 'railcar' 
+require_relative 'railcar' 
 
 class PassengerRailcar < Railcar
 
-  attr_reader: seat_count
+  attr_reader :seat_count
 
   def initialize(lseat_count)
     @seat_count = seat_count
@@ -10,6 +10,6 @@ class PassengerRailcar < Railcar
   
   private
   
-  attr_writer: seat_count
+  attr_writer :seat_count
   
 end
