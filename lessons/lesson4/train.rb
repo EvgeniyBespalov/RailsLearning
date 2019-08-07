@@ -19,7 +19,7 @@ class Train
   
   def take_route(route)
     @route = route
-    route.firt_station << self
+    route.firt_station << self.station
   end
   
   def to_next_station

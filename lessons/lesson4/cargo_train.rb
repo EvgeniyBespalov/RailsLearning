@@ -1,4 +1,5 @@
-require_relative 'train' 
+require_relative 'train'
+require_relative 'cargo_railcar'
 
 class CargoTrain < Train
 
@@ -7,10 +8,11 @@ class CargoTrain < Train
   end
   
   def railcars_attach(railcars)
-    super(railcars)
+    super(railcars) if railcars.class == CargoRailcar
   end
   
   def railcars_detach(railcars)
-    super(railcars)
+    super(railcars) if railcars.class == CargoRailcar
   end
+
 end

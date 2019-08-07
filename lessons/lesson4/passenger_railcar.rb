@@ -4,7 +4,7 @@ class PassengerRailcar < Railcar
 
   attr_reader :seat_count
 
-  def initialize(lseat_count)
+  def initialize(seat_count)
     @seat_count = seat_count
   end
   
