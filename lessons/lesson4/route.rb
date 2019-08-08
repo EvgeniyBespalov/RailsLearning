@@ -9,7 +9,7 @@ class Route
   end
   
   def way_stations<<(station)
-    @way_stations << station
+    @way_stations << station unless @way_stations.include? station
   end
   
   def remove_way_station(station)
