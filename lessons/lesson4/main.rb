@@ -107,13 +107,13 @@ class Main
     return unless train
     
     case train_send_menu
-        when 0
-          return
-        when 1
-          train.to_previous_station
-        when 2
-          train.to_next_station
-      end
+      when 0
+        return
+      when 1
+        train.to_previous_station
+      when 2
+        train.to_next_station
+    end
   end  
   
   def train_processing
@@ -128,9 +128,9 @@ class Main
         when 3
           train_take_route
         when 4
-          attach_vagon
+          train_attach_railcar
         when 5
-          detach_vagon
+          train_detach_railcar
       end
     end
   end
@@ -158,8 +158,75 @@ class Main
   end
   
   def train_take_route
-  
+    if (@routes.size == 0) then
+      puts "Список маршрутов пуст, продолжение невозможно."
+      return
+    end
+    if (@trains.size == 0) then
+      puts "Список поездов пуст, продолжение невозможно."
+      return
+    end
+    
+    train = select_train
+    return unless train
+    
+    route = select_route
+    return unless route
+    
+    train.take_route(route)    
   end
+  
+  def train_attach_railcar
+    train = select_train
+    return unless train
+    
+    if train.type == :cargo then
+      puts "Введите грузоподъемность"
+      loading_capacity = gets.chomp.to_i
+      return unless loading_capacity
+      
+      train.railcars_attach(CargoRailcar.new(loading_capacity))
+    end
+    
+    if train.type == :passenger then
+      puts "Введите число пассажирских мест"
+      seat_count = gets.chomp.to_i
+      return unless seat_count
+      
+      train.railcars_attach(PassengerRailcar.new(seat_count))
+    end
+  end
+  
+  def train_detach_railcar
+    train = select_train
+    return unless train
+    
+    
+  end
+  
+  
+  def railcars_print(train)
+    puts "К поезду не прицеплены вагоны" if train.railcars.size == 0
+    
+    train.railcars.each { |railcar| puts "Вагон с числом пассажиромест - \"#{railcar.seat_count}\"" } if (train.type == :passenger)
+    train.railcars.each { |railcar| puts "Вагон с грузоподъемностью - \"#{railcar.loading_capacity}\"" } if (train.type == :cargo)
+  end  
+  
+  
+  def select_route
+    routes_print
+    
+    puts "Введите порядковый номер маршрута в списке"
+    route_number = gets.chomp.to_s
+    route = routes[train_number - 1]
+    unless route then
+      puts "Маршрут не найден"
+      return
+    end
+    route
+  end  
+  
+  
   
   def route_processing
     loop do
@@ -182,6 +249,21 @@ class Main
     puts "Список станций пуст" if @routes.size == 0
     @routes.each { |route| puts "Маршрут из \"#{route.first_station.name}\" в \"#{route.last_station.name}\"" }
   end  
+  
+  
+  def select_route
+    routes_print
+    
+    puts "Введите порядковый номер маршрута в списке"
+    route_number = gets.chomp.to_s
+    route = routes[train_number - 1]
+    unless route then
+      puts "Маршрут не найден"
+      return
+    end
+    route
+  end  
+  
   
   def main_menu
     puts
