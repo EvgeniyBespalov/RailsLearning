@@ -57,15 +57,15 @@ class Main
 
   def stations_print
     puts "Список станций пуст" if @stations.size == 0
-    @stations.each { |station| puts "#{station.name}" }
+    @stations.each_with_index { |station, index| puts "#{index + 1} - #{station.name}" }
   end  
   
   def select_station
     stations_print
     return if @stations.size == 0
-    puts "Введите название станции"
-    station_name = gets.chomp.to_s
-    station = @stations.find { |station| station.name == station_name }
+    puts "Введите порядковый номер станции"
+    station_number = gets.chomp.to_i
+    station = @stations[station_number - 1]
     unless station then
       puts "Станция не найдена"
       return
@@ -89,7 +89,7 @@ class Main
   end  
   
   def station_create
-    puts "Введите название станции"
+    puts "Введите порядковый номер станции"
     station_name = gets.chomp.to_s
     @stations << Station.new(station_name) unless @stations.find { |station| station.name == station_name }
   end
@@ -137,7 +137,7 @@ class Main
 
   def trains_print
     puts "Список поездов пуст" if @trains.size == 0
-    @trains.each { |train| puts "#{train.number}" }
+    @trains.each_with_index { |train, index| puts "#{index + 1} - #{train.number}" }
   end  
   
   def train_create
@@ -201,32 +201,36 @@ class Main
     train = select_train
     return unless train
     
+    railcar = select_railcar(train)
+    return unless railcar
     
+    train.railcars_detach(railcar)
   end
   
   
   def railcars_print(train)
     puts "К поезду не прицеплены вагоны" if train.railcars.size == 0
     
-    train.railcars.each { |railcar| puts "Вагон с числом пассажиромест - \"#{railcar.seat_count}\"" } if (train.type == :passenger)
-    train.railcars.each { |railcar| puts "Вагон с грузоподъемностью - \"#{railcar.loading_capacity}\"" } if (train.type == :cargo)
+    train.railcars.each_with_index { |railcar, index| puts "#{index + 1} - вагон с числом пассажиромест - \"#{railcar.seat_count}\"" } if (train.type == :passenger)
+    train.railcars.each_with_index { |railcar, index| puts "#{index + 1} - вагон с грузоподъемностью - \"#{railcar.loading_capacity}\"" } if (train.type == :cargo)
   end  
   
   
-  def select_route
-    routes_print
+  def select_railcar(train)
     
-    puts "Введите порядковый номер маршрута в списке"
-    route_number = gets.chomp.to_s
-    route = routes[train_number - 1]
-    unless route then
-      puts "Маршрут не найден"
+    return if train.railcars.size == 0
+    
+    railcars_print(train)
+    
+    puts "Введите порядковый номер вагона в списке"
+    railcar_number = gets.chomp.to_i
+    railcar = train.railcars[railcar_number - 1]
+    unless railcar then
+      puts "Вагон не найден"
       return
     end
-    route
-  end  
-  
-  
+    railcar
+  end
   
   def route_processing
     loop do
@@ -236,27 +240,36 @@ class Main
         when 1
           routes_print
         when 2
-          route_create
+          route_stations_print
         when 3
-          station_add
+          route_create
         when 4
-          station_remove
+          route_station_add
+        when 5
+          route_station_remove
       end
     end
   end
   
   def routes_print
-    puts "Список станций пуст" if @routes.size == 0
-    @routes.each { |route| puts "Маршрут из \"#{route.first_station.name}\" в \"#{route.last_station.name}\"" }
+    puts "Список маршруов пуст" if @routes.size == 0
+    
+    @routes.each_with_index { |route, index| puts "#{index + 1} - маршрут из \"#{route.first_station.name}\" в \"#{route.last_station.name}\"" }
   end  
   
+  def route_stations_print
+    route = select_route
+    return unless route
+    
+    route.stations.each { |station| puts "#{station.name}" }
+  end
   
   def select_route
     routes_print
     
     puts "Введите порядковый номер маршрута в списке"
-    route_number = gets.chomp.to_s
-    route = routes[train_number - 1]
+    route_number = gets.chomp.to_i
+    route = routes[route_number - 1]
     unless route then
       puts "Маршрут не найден"
       return
@@ -264,6 +277,48 @@ class Main
     route
   end  
   
+  def routes_create
+    stations_print
+    return if @stations.size == 0
+    
+    puts "Введите порядковый номер начальной станции маршрута"
+    station_start_number = gets.chomp.to_i
+    station_start = @stations[station_start_number - 1]
+    unless station_start then
+      puts "Станция не найдена"
+      return
+    end
+    
+    puts "Введите порядковый номер конечной станции маршрута"
+    station_stop_number = gets.chomp.to_i
+    station_stop = @stations[station_stop_number - 1]
+    unless station_stop then
+      puts "Станция не найдена"
+      return
+    end
+    
+    @routes << Roures.new(station_start, station_end) unless @routess.find { |route| route.first_station == station_start && route.last_station == station_end}
+  end  
+  
+  def route_station_add
+    route = select_route
+    return unless route
+    
+    station = select_station
+    return unless station
+    
+    route << station unless route.stations.find { |s| s.name == station.name}
+  end
+  
+  def route_station_remove
+    route select_route
+    return unless route
+    
+    station = select_station
+    return unless station
+    
+    route.remove_way_station(station)
+  end
   
   def main_menu
     puts
@@ -319,9 +374,10 @@ class Main
   def route_main_menu
     puts
     puts "Введите 1 для просмотра списка маршрутов"
-    puts "Введите 2 для создания маршрута"
-    puts "Введите 3 для добавления к маршруту станции"
-    puts "Введите 4 для удаления из маршрута станции"
+    puts "Введите 2 для просмотра списка списк станций маршрута"
+    puts "Введите 3 для создания маршрута"
+    puts "Введите 4 для добавления к маршруту станции"
+    puts "Введите 5 для удаления из маршрута станции"
     puts "Введите 0 для возврата в главное меню"
     puts
     gets.chomp.to_i
@@ -357,12 +413,11 @@ routes[0]<<stations[1]
 routes[0]<<stations[2]
 routes[0]<<stations[3]
 
-routes[1]<<stations[5]
 routes[1]<<stations[6]
 routes[1]<<stations[7]
 routes[1]<<stations[8]
 routes[1]<<stations[9]
-routes[1]<<stations[10]
+#routes[1]<<stations[10]
 routes[1]<<stations[11]
 
 m = Main.new(stations, trains, routes)
