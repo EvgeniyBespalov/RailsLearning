@@ -1,0 +1,3 @@
+class Railcar
+
+end
