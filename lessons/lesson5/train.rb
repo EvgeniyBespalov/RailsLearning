@@ -1,5 +1,12 @@
+require_relative 'company'
+
 class Train
 
+  include Company
+  include InstanceCounter
+    
+  @@trains = []
+  
   attr_reader :number, :type, :speed, :railcars
   
   def initialize(number, type)
@@ -7,7 +14,13 @@ class Train
     @type = type
     @railcars = []
     @speed = 0
+    
+    @@trains << self
   end
+
+  def self.find(number)
+    @@trains.find { |train| train.number == number }
+  end  
   
   def increase_speed(speed)
     @speed = speed if speed > @speed  

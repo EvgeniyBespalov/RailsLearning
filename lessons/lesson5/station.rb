@@ -1,12 +1,22 @@
 class Station
-
+  
+  include InstanceCounter
+  
+  @@stations = []
+  
   attr_reader :name, :trains
   
   def initialize(name)
     @name = name
     @trains = []
+    
+    @@stations << self
   end
-
+  
+  def self.all
+    @@stations
+  end
+  
   def cargo_trains
     trains.each { |train| train if train.type == :cargo }
   end
